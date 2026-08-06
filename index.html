@@ -546,32 +546,7 @@
 </style>
 </head>
 <body>
-<!-- ANTI-SCREENSHOT LAYER -->
-<div id="no-screenshot-shield" style="
-  position: fixed;
-  inset: 0;
-  z-index: 99998;
-  pointer-events: none;
-  mix-blend-mode: difference;
-  background: white;
-  animation: shield-flicker 0.00001s infinite;
-"></div>
-<style>
-  /* This layer is invisible to human eyes but captures as black/inverted in screenshots */
-  @keyframes shield-flicker { 0%,100%{opacity:0.001} 50%{opacity:0.002} }
 
-  /* Wrap all real content in an invert layer so it looks normal on screen,
-     but the combination with the overlay ruins screenshot captures */
-  #page-content {
-    position: relative;
-    z-index: 1;
-  }
-
-  /* On print: hide everything */
-  @media print {
-    html, body { visibility: hidden !important; display: none !important; }
-  }
-</style>
 
 <!-- PROTECTION MESSAGE -->
 <div id="protect-msg">
@@ -584,7 +559,7 @@
 
 <!-- TOP BAR COUNTDOWN -->
 <div class="topbar" id="topbar-countdown">
-  🔥 OFERTA EXPIRA EM: &nbsp;<span id="countdown-timer" style="font-size:15px;font-weight:800;letter-spacing:1px;">05:00</span>&nbsp; — De R$ 697 por apenas <strong>R$ 297</strong> 🔥
+  🔥 OFERTA EXPIRA EM: &nbsp;<span id="countdown-timer" style="font-size:15px;font-weight:800;letter-spacing:1px;">05:00</span>&nbsp; — De R$ 697 por apenas <strong>R$ 197</strong> 🔥
 </div>
 
 <!-- EXPIRED OVERLAY -->
@@ -976,7 +951,7 @@
         <li><span class="check">✦</span> Acesso imediato após o pagamento</li>
       </ul>
       <a href="https://pay.kiwify.com.br/AhCPosH" target="_blank" class="btn-primary" style="width:100%;justify-content:center;font-size:17px;padding:20px;">
-        👉 COMPRAR AGORA — R$ 297
+        👉 COMPRAR AGORA — R$ 197
       </a>
       <div class="guarantee">
         <div class="guarantee-icon">🛡️</div>
@@ -1018,7 +993,7 @@
 <!-- STICKY MOBILE CTA -->
 <div class="sticky-cta">
   <div class="sticky-cta-text">
-    <strong>R$ 297 — Acesso imediato</strong>
+    <strong>R$ 197 — Acesso imediato</strong>
     <span style="display:flex;align-items:center;gap:6px;margin-top:2px;">
       ⏰ <span style="color:#E8C97A;font-weight:700;" id="sticky-timer">05:00</span>
       <span style="font-size:12px;opacity:0.7;">restantes</span>
