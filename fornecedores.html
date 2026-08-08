@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lista de Fornecedores — ChinaLucrativa Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F5F0;
+    --surface: #FFFFFF;
+    --surface2: #F0EFE9;
+    --border: rgba(0,0,0,0.08);
+    --gold: #A07830;
+    --gold-dim: rgba(160,120,48,0.1);
+    --gold-border: rgba(160,120,48,0.25);
+    --green: #25D366;
+    --green-dim: rgba(37,211,102,0.1);
+    --text: #1A1A1A;
+    --muted: rgba(26,26,26,0.5);
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* HEADER */
+  header {
+    background: rgba(255,255,255,0.95);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 24px;
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(20px);
+  }
+  .header-inner {
+    max-width: 860px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo { font-size: 15px; font-weight: 700; color: var(--gold); }
+  .logo span { color: var(--muted); font-weight: 400; }
+
+  /* MAIN */
+  main { max-width: 860px; margin: 0 auto; padding: 36px 24px 80px; }
+
+  /* HERO */
+  .hero {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 40px 32px;
+    text-align: center;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .hero-emoji { font-size: 40px; margin-bottom: 14px; }
+  .hero h1 { font-size: clamp(20px, 4vw, 28px); font-weight: 700; margin-bottom: 8px; }
+  .hero h1 span { color: var(--gold); }
+  .hero p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+  /* CADASTRO BOX */
+  .cadastro-box {
+    background: var(--gold-dim);
+    border: 1px solid var(--gold-border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .cadastro-icon { font-size: 36px; flex-shrink: 0; }
+  .cadastro-info { flex: 1; min-width: 200px; }
+  .cadastro-info h3 { font-size: 15px; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+  .cadastro-info p { font-size: 13px; color: var(--muted); line-height: 1.55; margin-bottom: 12px; }
+  .cadastro-empresa { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 10px; }
+  .wa-btn-cadastro {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--green);
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 12px 22px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(37,211,102,0.25);
+  }
+  .wa-btn-cadastro:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,211,102,0.3); }
+  .wa-icon { width: 20px; height: 20px; fill: white; flex-shrink: 0; }
+
+  /* CATEGORY HEADER */
+  .category {
+    display: flex; align-items: center; gap: 12px;
+    margin: 32px 0 16px;
+  }
+  .category-line { flex: 1; height: 1px; background: var(--border); }
+  .category-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--gold);
+    padding: 6px 14px;
+    background: var(--gold-dim);
+    border: 1px solid var(--gold-border);
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+
+  /* SUPPLIER CARD */
+  .supplier-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .supplier-card:hover { box-shadow: 0 4px 24px rgba(0,0,0,0.07); transform: translateY(-2px); }
+  .supplier-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; bottom: 0; width: 3px;
+    background: var(--gold);
+    border-radius: 3px 0 0 3px;
+  }
+  .card-top {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 12px; margin-bottom: 16px; flex-wrap: wrap;
+  }
+  .company-name {
+    font-size: 16px; font-weight: 700; color: var(--text);
+    margin-bottom: 4px;
+  }
+  .brand-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .brand-tag {
+    font-size: 11px; font-weight: 600;
+    padding: 3px 10px;
+    background: var(--gold-dim);
+    color: var(--gold);
+    border: 1px solid var(--gold-border);
+    border-radius: 100px;
+    letter-spacing: 0.5px;
+  }
+  .card-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .field { display: flex; flex-direction: column; gap: 3px; }
+  .field-label {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .field-value { font-size: 14px; color: var(--text); font-weight: 500; }
+  .field-value.email { font-size: 13px; word-break: break-all; }
+  .field-value.no-email { color: var(--muted); font-style: italic; font-size: 13px; }
+
+  /* BUTTONS */
+  .card-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn-wa {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--green);
+    color: white;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s;
+    box-shadow: 0 2px 10px rgba(37,211,102,0.2);
+  }
+  .btn-wa:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,211,102,0.3); }
+  .btn-email {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 13px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+  .btn-email:hover { background: var(--surface2); border-color: rgba(0,0,0,0.15); }
+
+  /* FOOTER */
+  .footer-note {
+    text-align: center;
+    margin-top: 40px;
+    padding: 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+  .footer-note p { font-size: 13px; color: var(--muted); line-height: 1.65; }
+  .footer-note strong { color: var(--gold); }
+
+  @media(max-width:600px) {
+    main { padding: 24px 16px 60px; }
+    .hero { padding: 28px 20px; }
+    .cadastro-box { flex-direction: column; text-align: center; }
+    .card-top { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">ChinaLucrativa <span>/ Fornecedores</span></div>
+    <span style="font-size:20px;">🇨🇳</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-emoji">🏭</div>
+    <h1>Lista de <span>Fornecedores</span> Verificados</h1>
+    <p>Contatos diretos de fabricantes na China.<br>Clique no WhatsApp para iniciar a conversa agora.</p>
+  </div>
+
+  <!-- CADASTRO BOX -->
+  <div class="cadastro-box">
+    <div class="cadastro-icon">📦</div>
+    <div class="cadastro-info">
+      <h3>Primeiro Passo — Faça seu Cadastro</h3>
+      <p>Antes de comprar, entre em contato com a CDE-BOX para fazer seu cadastro e organizar a retirada dos seus produtos no Paraguai.</p>
+      <div class="cadastro-empresa">🏢 CDE-BOX — Ciudad del Este, Paraguai</div>
+      <a href="https://wa.me/595975109484" target="_blank" class="wa-btn-cadastro">
+        <svg class="wa-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        Fazer Cadastro — WhatsApp
+      </a>
+    </div>
+  </div>
+
+  <!-- AGULHAS E PLATINAS -->
+  <div class="category">
+    <div class="category-line"></div>
+    <div class="category-label">🪡 Agulhas & Platinas</div>
+    <div class="category-line"></div>
+  </div>
+
+  <!-- NANTONG ZHONGDE -->
+  <div class="supplier-card">
+    <div class="card-top">
+      <div>
+        <div class="company-name">NANTONG ZHONGDE NEEDLE</div>
+        <div class="brand-tags">
+          <span class="brand-tag">SIGMA</span>
+          <span class="brand-tag">OUTRAS</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-fields">
+      <div class="field">
+        <span class="field-label">Contato</span>
+        <span class="field-value">JUNCHENG ZHU</span>
+      </div>
+      <div class="field">
+        <span class="field-label">WhatsApp / Telefone</span>
+        <span class="field-value">+86 177 1500 8035</span>
+      </div>
+      <div class="field">
+        <span class="field-label">E-mail</span>
+        <span class="field-value email">inquiry@zdneedle.com</span>
+      </div>
+    </div>
+    <div class="card-actions">
+      <a href="https://wa.me/8617715008035" target="_blank" class="btn-wa">
+        <svg style="width:16px;height:16px;fill:white;flex-shrink:0;" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+      <a href="mailto:inquiry@zdneedle.com" class="btn-email">✉️ E-mail</a>
+    </div>
+  </div>
+
+  <!-- LEADSFON -->
+  <div class="supplier-card">
+    <div class="card-top">
+      <div>
+        <div class="company-name">LEADSFON PILOTELLI</div>
+        <div class="brand-tags">
+          <span class="brand-tag">LEADSFON</span>
+          <span class="brand-tag">OUTRAS</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-fields">
+      <div class="field">
+        <span class="field-label">Contato</span>
+        <span class="field-value">AMELIA YOU</span>
+      </div>
+      <div class="field">
+        <span class="field-label">WhatsApp / Telefone</span>
+        <span class="field-value">+86 180 5983 0679</span>
+      </div>
+      <div class="field">
+        <span class="field-label">E-mail</span>
+        <span class="field-value email">sales4@leadsfon.com</span>
+      </div>
+    </div>
+    <div class="card-actions">
+      <a href="https://wa.me/8618059830679" target="_blank" class="btn-wa">
+        <svg style="width:16px;height:16px;fill:white;flex-shrink:0;" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+      <a href="mailto:sales4@leadsfon.com" class="btn-email">✉️ E-mail</a>
+    </div>
+  </div>
+
+  <!-- YANTAI TIANCHENG -->
+  <div class="supplier-card">
+    <div class="card-top">
+      <div>
+        <div class="company-name">YANTAI TIANCHENG NEEDLE</div>
+        <div class="brand-tags">
+          <span class="brand-tag">GOLDEN SHARP</span>
+          <span class="brand-tag">OUTRAS</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-fields">
+      <div class="field">
+        <span class="field-label">Contato</span>
+        <span class="field-value">ZHAO CHERYL</span>
+      </div>
+      <div class="field">
+        <span class="field-label">WhatsApp / Telefone</span>
+        <span class="field-value">+86 136 6865 7551</span>
+      </div>
+      <div class="field">
+        <span class="field-label">E-mail</span>
+        <span class="field-value no-email">Não disponível</span>
+      </div>
+    </div>
+    <div class="card-actions">
+      <a href="https://wa.me/8613668657551" target="_blank" class="btn-wa">
+        <svg style="width:16px;height:16px;fill:white;flex-shrink:0;" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+    </div>
+  </div>
+
+  <!-- ACESSÓRIOS -->
+  <div class="category">
+    <div class="category-line"></div>
+    <div class="category-label">⚙️ Acessórios Têxteis</div>
+    <div class="category-line"></div>
+  </div>
+
+  <!-- SUZHOU TOPT -->
+  <div class="supplier-card">
+    <div class="card-top">
+      <div>
+        <div class="company-name">SUZHOU TOPT</div>
+        <div class="brand-tags">
+          <span class="brand-tag">VÁRIAS MARCAS</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-fields">
+      <div class="field">
+        <span class="field-label">Contato</span>
+        <span class="field-value">SALLY WANG</span>
+      </div>
+      <div class="field">
+        <span class="field-label">WhatsApp / Telefone</span>
+        <span class="field-value">+86 181 6852 0802</span>
+      </div>
+      <div class="field">
+        <span class="field-label">E-mail</span>
+        <span class="field-value email">sally.wang@topt-textile.com</span>
+      </div>
+    </div>
+    <div class="card-actions">
+      <a href="https://wa.me/8618168520802" target="_blank" class="btn-wa">
+        <svg style="width:16px;height:16px;fill:white;flex-shrink:0;" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+      <a href="mailto:sally.wang@topt-textile.com" class="btn-email">✉️ E-mail</a>
+    </div>
+  </div>
+
+  <!-- FOOTER NOTE -->
+  <div class="footer-note">
+    <p>📌 <strong>Lembre-se:</strong> Sempre envie a foto do modelo ao fazer pedidos de agulhas e platinas.<br>
+    Use os scripts de compra para se comunicar corretamente com os fornecedores.<br><br>
+    <strong>🤝 Bons Negócios!</strong></p>
+  </div>
+
+</main>
+
+</body>
+</html>
