@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valores & Frete — ChinaLucrativa Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F5F0;
+    --surface: #FFFFFF;
+    --surface2: #F0EFE9;
+    --border: rgba(0,0,0,0.08);
+    --gold: #A07830;
+    --gold-dim: rgba(160,120,48,0.1);
+    --gold-border: rgba(160,120,48,0.25);
+    --blue: #1A5FAB;
+    --blue-dim: rgba(26,95,171,0.08);
+    --blue-border: rgba(26,95,171,0.2);
+    --green: #0F7A4A;
+    --green-dim: rgba(15,122,74,0.08);
+    --red: #C0392B;
+    --red-dim: rgba(192,57,43,0.08);
+    --text: #1A1A1A;
+    --muted: rgba(26,26,26,0.5);
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* HEADER */
+  header {
+    background: rgba(255,255,255,0.95);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 24px;
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(20px);
+  }
+  .header-inner {
+    max-width: 860px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo { font-size: 15px; font-weight: 700; color: var(--gold); }
+  .logo span { color: var(--muted); font-weight: 400; }
+
+  /* MAIN */
+  main { max-width: 860px; margin: 0 auto; padding: 36px 24px 80px; }
+
+  /* HERO */
+  .hero {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 40px 32px;
+    text-align: center;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .hero-emoji { font-size: 40px; margin-bottom: 14px; }
+  .hero h1 { font-size: clamp(20px, 4vw, 28px); font-weight: 700; margin-bottom: 8px; }
+  .hero h1 span { color: var(--gold); }
+  .hero p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+  /* SECTION HEADER */
+  .category {
+    display: flex; align-items: center; gap: 12px;
+    margin: 32px 0 16px;
+  }
+  .category-line { flex: 1; height: 1px; background: var(--border); }
+  .category-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--gold);
+    padding: 6px 14px;
+    background: var(--gold-dim);
+    border: 1px solid var(--gold-border);
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+
+  /* INFO CARD */
+  .info-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .info-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; bottom: 0; width: 3px;
+    border-radius: 3px 0 0 3px;
+  }
+  .info-card.gold::before { background: var(--gold); }
+  .info-card.blue::before { background: var(--blue); }
+  .info-card.green::before { background: var(--green); }
+  .info-card.red::before { background: var(--red); }
+
+  .card-title {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 16px; font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .card-title .icon { font-size: 22px; }
+
+  /* PRAZO VISUAL */
+  .prazo-visual {
+    display: flex; align-items: center; gap: 0;
+    margin: 20px 0;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .prazo-step {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 6px; flex: 1; min-width: 80px;
+  }
+  .prazo-dot {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    border: 2px solid var(--border);
+    background: var(--surface2);
+  }
+  .prazo-dot.active { background: var(--gold-dim); border-color: var(--gold-border); }
+  .prazo-label { font-size: 12px; font-weight: 600; color: var(--text); text-align: center; }
+  .prazo-sub { font-size: 11px; color: var(--muted); text-align: center; }
+  .prazo-arrow {
+    color: var(--gold); font-size: 20px;
+    margin-bottom: 20px; flex-shrink: 0;
+  }
+  .prazo-range {
+    text-align: center;
+    padding: 14px;
+    background: var(--gold-dim);
+    border: 1px solid var(--gold-border);
+    border-radius: 8px;
+    margin-top: 16px;
+  }
+  .prazo-range strong { font-size: 22px; color: var(--gold); font-weight: 700; }
+  .prazo-range span { font-size: 13px; color: var(--muted); display: block; margin-top: 2px; }
+
+  /* FRETE TABELA */
+  .frete-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    font-size: 14px;
+  }
+  .frete-table th {
+    background: var(--surface2);
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .frete-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-weight: 500;
+  }
+  .frete-table tr:last-child td { border-bottom: none; }
+  .frete-table tr:hover td { background: var(--surface2); }
+  .price-highlight {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--green);
+  }
+
+  /* FOB CARD */
+  .fob-card {
+    background: var(--blue-dim);
+    border: 1px solid var(--blue-border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 14px;
+  }
+  .fob-title {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 16px; font-weight: 700; color: var(--blue);
+    margin-bottom: 12px;
+  }
+  .fob-body { font-size: 14px; color: var(--text); line-height: 1.7; margin-bottom: 16px; }
+
+  /* SCRIPT COPY */
+  .script-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 12px;
+  }
+  .script-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px;
+    background: var(--blue-dim);
+    border-bottom: 1px solid var(--blue-border);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--blue);
+  }
+  .copy-btn {
+    background: rgba(26,95,171,0.1);
+    border: 1px solid var(--blue-border);
+    color: var(--blue);
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 4px 12px; border-radius: 4px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .copy-btn:hover { background: var(--blue); color: white; }
+  .copy-btn.copied { background: var(--green-dim); color: var(--green); border-color: var(--green); }
+  .script-content {
+    padding: 16px;
+    font-family: 'Inter', monospace;
+    font-size: 13px; line-height: 1.75;
+    color: var(--text);
+  }
+
+  /* TIP */
+  .tip {
+    display: flex; gap: 12px; align-items: flex-start;
+    background: var(--surface2);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    font-size: 13px; line-height: 1.65;
+    color: rgba(26,26,26,0.8);
+  }
+  .tip.red { border-color: var(--red); }
+  .tip.green { border-color: var(--green); }
+  .tip.blue { border-color: var(--blue); }
+  .tip-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+  /* LIMIT CARD */
+  .limit-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 14px;
+    display: flex; gap: 20px; align-items: center;
+    flex-wrap: wrap;
+  }
+  .limit-number {
+    font-size: 48px; font-weight: 700;
+    color: var(--gold); line-height: 1;
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+  }
+  .limit-number sup { font-size: 22px; vertical-align: super; }
+  .limit-info h4 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .limit-info p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* FOOTER */
+  .footer-note {
+    text-align: center;
+    margin-top: 40px;
+    padding: 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+  .footer-note p { font-size: 13px; color: var(--muted); line-height: 1.65; }
+  .footer-note strong { color: var(--gold); }
+
+  @media(max-width:600px) {
+    main { padding: 24px 16px 60px; }
+    .hero { padding: 28px 20px; }
+    .prazo-arrow { display: none; }
+    .limit-number { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">ChinaLucrativa <span>/ Valores & Frete</span></div>
+    <span style="font-size:20px;">✈️</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-emoji">✈️</div>
+    <h1>Valores & <span>Frete</span></h1>
+    <p>Tudo que você precisa saber sobre transporte,<br>prazos e custos para importar da China ao Paraguai.</p>
+  </div>
+
+  <!-- PRAZO -->
+  <div class="category">
+    <div class="category-line"></div>
+    <div class="category-label">⏱️ Prazo de Entrega</div>
+    <div class="category-line"></div>
+  </div>
+
+  <div class="info-card gold">
+    <div class="card-title">
+      <span class="icon">✈️</span> Transporte Aéreo — China → Paraguai
+    </div>
+    <div class="prazo-visual">
+      <div class="prazo-step">
+        <div class="prazo-dot active">🇨🇳</div>
+        <div class="prazo-label">Saída China</div>
+        <div class="prazo-sub">Dia 0</div>
+      </div>
+      <div class="prazo-arrow">→</div>
+      <div class="prazo-step">
+        <div class="prazo-dot">🛃</div>
+        <div class="prazo-label">Em trânsito</div>
+        <div class="prazo-sub">Voo + alfândega</div>
+      </div>
+      <div class="prazo-arrow">→</div>
+      <div class="prazo-step">
+        <div class="prazo-dot active">🇵🇾</div>
+        <div class="prazo-label">Chegada Paraguai</div>
+        <div class="prazo-sub">Retirada</div>
+      </div>
+    </div>
+    <div class="prazo-range">
+      <strong>7 a 15 dias</strong>
+      <span>Prazo estimado — varia conforme volume, alfândega e voo disponível</span>
+    </div>
+  </div>
+
+  <!-- FRETE -->
+  <div class="category">
+    <div class="category-line"></div>
+    <div class="category-label">💵 Valor do Frete Aéreo</div>
+    <div class="category-line"></div>
+  </div>
+
+  <div class="info-card blue">
+    <div class="card-title">
+      <span class="icon">⚖️</span> Cobrança por Peso (KG)
+    </div>
+    <p style="font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:16px;">
+      O frete aéreo é cobrado por quilograma. Quanto mais pesado o pedido, maior o custo de transporte. Planeje seus pedidos levando o peso em consideração.
+    </p>
+    <table class="frete-table">
+      <thead>
+        <tr>
+          <th>Modalidade</th>
+          <th>Valor por KG</th>
+          <th>Limite de Compra</th>
+          <th>Destino</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>✈️ Aéreo</td>
+          <td><span class="price-highlight">US$ 23,00 / kg</span></td>
+          <td>Até <strong>US$ 2.000</strong> por compra</td>
+          <td>🇵🇾 Paraguai</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- LIMITE -->
+  <div class="limit-card">
+    <div class="limit-number"><sup>$</sup>2000</div>
+    <div class="limit-info">
+      <h4>Limite por compra — US$ 2.000</h4>
+      <p>Cada compra individual deve ser de até <strong>US$ 2.000</strong> para se enquadrar nas regras de importação com retirada no Paraguai. Acima desse valor, consulte antes de fechar o pedido.</p>
+    </div>
+  </div>
+
+  <div class="tip red">
+    <div class="tip-icon">⚠️</div>
+    <div><strong>Importante:</strong> O limite de US$ 2.000 por compra é a regra geral. Não ultrapasse esse valor em um único pedido. Se o valor for maior que US$ 2.000, <strong>fracione em 2 pedidos separados</strong> para manter dentro do limite permitido.</div>
+  </div>
+
+  <!-- FOB -->
+  <div class="category">
+    <div class="category-line"></div>
+    <div class="category-label">📄 Como Pedir o Frete</div>
+    <div class="category-line"></div>
+  </div>
+
+  <div class="fob-card">
+    <div class="fob-title">
+      <span>📦</span> Sempre peça Frete FOB
+    </div>
+    <div class="fob-body">
+      Ao fechar o pedido com o fornecedor, solicite sempre o <strong>Frete FOB</strong>. Dessa forma, o fornecedor inclui o custo do frete direto na <strong>invoice (nota fiscal)</strong>, facilitando o controle do valor total da compra.
+    </div>
+
+    <div style="background:var(--surface2);border-radius:8px;padding:16px;margin-bottom:16px;">
+      <div style="font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">O que significa FOB</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="font-size:13px;line-height:1.6;">
+          <strong>FOB</strong> = Free On Board<br>
+          <span style="color:var(--muted);">Você paga o frete. O valor já aparece incluído na invoice do fornecedor.</span>
+        </div>
+        <div style="font-size:13px;line-height:1.6;">
+          <strong>Vantagem:</strong><br>
+          <span style="color:var(--muted);">Controle total do custo. O frete fica registrado no documento oficial da compra.</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="font-size:13px;font-weight:600;color:var(--blue);margin-bottom:8px;">🇨🇳 Script para pedir Frete FOB — copie e envie ao fornecedor:</div>
+    <div class="script-box">
+      <div class="script-header">
+        Frete FOB — Enviar ao fornecedor
+        <button class="copy-btn" onclick="copyText(this, 'script-fob')">Copiar</button>
+      </div>
+      <div class="script-content" id="script-fob">Hello,
+Please use FOB shipping terms for my order.
+Include the shipping cost in the commercial invoice.
+Thank you.</div>
+    </div>
+  </div>
+
+  <div class="tip green">
+    <div class="tip-icon">💡</div>
+    <div><strong>Dica:</strong> Ao receber a invoice do fornecedor, verifique se o frete já está incluído no valor total antes de fechar o pagamento.</div>
+  </div>
+
+  <div class="tip blue">
+    <div class="tip-icon">📌</div>
+    <div><strong>Lembre-se:</strong> O prazo de 7 a 15 dias começa a contar a partir da <strong>saída da China</strong>, não da data do pedido. Considere mais alguns dias para produção e embalagem antes do envio.</div>
+  </div>
+
+  <!-- RESUMO -->
+  <div class="category">
+    <div class="category-line"></div>
+    <div class="category-label">📋 Resumo Rápido</div>
+    <div class="category-line"></div>
+  </div>
+
+  <div class="info-card gold">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;">
+      <div style="text-align:center;padding:16px;background:var(--surface2);border-radius:8px;">
+        <div style="font-size:28px;margin-bottom:6px;">✈️</div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Modal</div>
+        <div style="font-size:15px;font-weight:700;">Aéreo</div>
+      </div>
+      <div style="text-align:center;padding:16px;background:var(--surface2);border-radius:8px;">
+        <div style="font-size:28px;margin-bottom:6px;">⏱️</div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Prazo</div>
+        <div style="font-size:15px;font-weight:700;">7 a 15 dias</div>
+      </div>
+      <div style="text-align:center;padding:16px;background:var(--surface2);border-radius:8px;">
+        <div style="font-size:28px;margin-bottom:6px;">⚖️</div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Frete</div>
+        <div style="font-size:15px;font-weight:700;">US$ 23 / kg</div>
+      </div>
+      <div style="text-align:center;padding:16px;background:var(--surface2);border-radius:8px;">
+        <div style="font-size:28px;margin-bottom:6px;">💵</div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Limite</div>
+        <div style="font-size:15px;font-weight:700;">US$ 2.000</div>
+      </div>
+      <div style="text-align:center;padding:16px;background:var(--surface2);border-radius:8px;">
+        <div style="font-size:28px;margin-bottom:6px;">📄</div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Incoterm</div>
+        <div style="font-size:15px;font-weight:700;">FOB</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-note">
+    <p>📌 Sempre peça <strong>Frete FOB</strong> e verifique o peso estimado antes de fechar o pedido.<br>
+    Dúvidas? Use os scripts de compra para se comunicar com os fornecedores.<br><br>
+    <strong>🤝 Bons Negócios!</strong></p>
+  </div>
+
+</main>
+
+<script>
+function copyText(btn, id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.innerText).then(() => {
+    btn.textContent = 'Copiado ✓';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copiar';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+
+</body>
+</html>
