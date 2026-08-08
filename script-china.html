@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Script de Compra Têxtil — China</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F5F0;
+    --surface: #FFFFFF;
+    --surface2: #F0EFE9;
+    --border: rgba(0,0,0,0.08);
+    --gold: #A07830;
+    --gold-dim: rgba(160,120,48,0.1);
+    --green: #0F7A4A;
+    --green-dim: rgba(15,122,74,0.1);
+    --red: #C0392B;
+    --red-dim: rgba(192,57,43,0.08);
+    --blue: #1A5FAB;
+    --blue-dim: rgba(26,95,171,0.08);
+    --white: #1A1A1A;
+    --muted: rgba(26,26,26,0.5);
+    --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--white);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* HEADER */
+  header {
+    background: rgba(255,255,255,0.92);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px;
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(20px);
+  }
+  .header-inner {
+    max-width: 900px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo { font-size: 15px; font-weight: 700; color: var(--gold); letter-spacing: 0.5px; }
+  .logo span { color: var(--muted); font-weight: 400; }
+  .flag { font-size: 20px; }
+
+  /* MAIN */
+  main { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 48px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 50% 0%, rgba(160,120,48,0.07), transparent);
+  }
+  .hero-flags { font-size: 32px; margin-bottom: 16px; }
+  .hero h1 {
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero p { font-size: 15px; color: var(--muted); line-height: 1.6; position: relative; }
+
+  /* SECTION */
+  .section { margin-bottom: 28px; }
+  .section-header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 16px;
+  }
+  .section-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .icon-gold { background: var(--gold-dim); }
+  .icon-green { background: var(--green-dim); }
+  .icon-blue { background: var(--blue-dim); }
+  .icon-red { background: var(--red-dim); }
+  .section-title { font-size: 17px; font-weight: 600; color: var(--white); }
+  .section-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  /* SCRIPT CARD */
+  .script-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .script-label {
+    padding: 10px 16px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .label-pt { background: var(--gold-dim); color: var(--gold); }
+  .label-en { background: var(--green-dim); color: var(--green); }
+  .label-tip { background: var(--red-dim); color: var(--red); }
+  .label-warn { background: rgba(251,191,36,0.12); color: #FBBF24; }
+  .script-body {
+    padding: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #1A1A1A;
+    position: relative;
+  }
+  .script-body.prose {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+  }
+  .highlight { color: var(--gold); font-weight: 600; }
+  .highlight-green { color: var(--green); font-weight: 600; }
+  .highlight-blue { color: var(--blue); }
+  .highlight-red { color: var(--red); }
+
+  /* COPY BUTTON */
+  .copy-btn {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .copy-btn:hover { background: rgba(255,255,255,0.12); color: var(--white); }
+  .copy-btn.copied { background: var(--green-dim); color: var(--green); border-color: var(--green); }
+
+  /* TIP BOX */
+  .tip-box {
+    background: var(--surface2);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: rgba(26,26,26,0.8);
+  }
+  .tip-box.green { border-color: var(--green); }
+  .tip-box.red { border-color: var(--red); }
+  .tip-box.blue { border-color: var(--blue); }
+  .tip-box strong { color: var(--white); }
+
+  /* RULE GRID */
+  .rule-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .rule-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+  }
+  .rule-card .rule-icon { font-size: 22px; margin-bottom: 10px; }
+  .rule-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .rule-card p { font-size: 13px; color: var(--muted); line-height: 1.55; }
+  .rule-card .example {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: var(--surface2);
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .wrong { color: var(--red); text-decoration: line-through; }
+  .right { color: var(--green); }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 32px 0;
+  }
+
+  /* CLOSING */
+  .closing {
+    text-align: center;
+    padding: 40px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-top: 32px;
+  }
+  .closing-emoji { font-size: 40px; margin-bottom: 16px; }
+  .closing h3 {
+    font-size: 22px; font-weight: 700;
+    color: var(--gold); margin-bottom: 8px;
+  }
+  .closing p { font-size: 15px; color: var(--muted); }
+
+  /* MOBILE */
+  @media(max-width:600px) {
+    main { padding: 24px 16px 60px; }
+    .hero { padding: 32px 16px; }
+    .script-body { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">ChinaLucrativa <span>/ Script de Compra</span></div>
+    <div class="flag">🇨🇳</div>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-flags">🇧🇷 → 🇨🇳</div>
+    <h1>Script de Compra <span>Têxtil na China</span></h1>
+    <p>Frases prontas, dicas e regras para negociar com fornecedores chineses<br>com segurança e profissionalismo.</p>
+  </div>
+
+  <!-- REGRAS IMPORTANTES -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-red">⚠️</div>
+      <div>
+        <div class="section-title">Regras Importantes</div>
+        <div class="section-sub">Siga sempre essas regras ao negociar</div>
+      </div>
+    </div>
+
+    <div class="rule-grid">
+      <div class="rule-card">
+        <div class="rule-icon">🔢</div>
+        <h4>Quantidade sem ponto</h4>
+        <p>Nunca use ponto para separar milhares. Chineses leem o ponto como decimal.</p>
+        <div class="example">
+          <span class="wrong">1.000 units</span><br>
+          <span class="right">1000 units ✓</span>
+        </div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">📋</div>
+        <h4>Pedido sempre detalhado</h4>
+        <p>Nunca diga "1000 de cada". Especifique modelo por modelo.</p>
+        <div class="example">
+          <span class="wrong">1000 of each</span><br>
+          <span class="right">1000 for G001<br>1000 for G002 ✓</span>
+        </div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">❌</div>
+        <h4>Erro no pedido — cancele</h4>
+        <p>Não peça para modificar. Cancele o pedido errado e faça um novo correto.</p>
+        <div class="example">
+          <span class="wrong">Please modify my order</span><br>
+          <span class="right">Please cancel this order.<br>New order: ... ✓</span>
+        </div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">👤</div>
+        <h4>Nome para Western Union</h4>
+        <p>Pergunte o primeiro nome e o segundo nome separadamente. Não use "sobrenome".</p>
+        <div class="example">
+          <span class="right">What is your first name?<br>What is your second name? ✓</span>
+        </div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">📸</div>
+        <h4>Sempre envie foto do modelo</h4>
+        <p>Ao pedir agulhas e platinas, envie o modelo completo com foto para evitar erros.</p>
+        <div class="example">
+          <span class="right">Please see the photo.<br>I need this exact model. ✓</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- AGULHAS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-gold">🪡</div>
+      <div>
+        <div class="section-title">Agulhas para Tear</div>
+        <div class="section-sub">Scripts prontos para pedir agulhas</div>
+      </div>
+    </div>
+
+    <div class="script-card">
+      <div class="script-label label-pt">🇧🇷 O que você quer dizer</div>
+      <div class="script-body prose">Eu preciso de agulhas para tear circular</div>
+    </div>
+    <div class="script-card">
+      <div class="script-label label-en">
+        🇨🇳 Script em inglês — copie e envie
+        <button class="copy-btn" onclick="copyText(this, 'script-agulha-1')">Copiar</button>
+      </div>
+      <div class="script-body" id="script-agulha-1">Hello,
+I need needles for circular knitting machine.
+Please send me your catalog with models and prices.
+Thank you.</div>
+    </div>
+
+    <div class="script-card">
+      <div class="script-label label-en">
+        🇨🇳 Fazer pedido de agulhas — copie e envie
+        <button class="copy-btn" onclick="copyText(this, 'script-agulha-2')">Copiar</button>
+      </div>
+      <div class="script-body" id="script-agulha-2">Hello,
+I would like to place an order for needles:
+
+<span class="highlight">1000</span> for <span class="highlight-green">[MODEL CODE 1]</span>
+<span class="highlight">1000</span> for <span class="highlight-green">[MODEL CODE 2]</span>
+<span class="highlight">1000</span> for <span class="highlight-green">[MODEL CODE 3]</span>
+
+Please confirm availability and total price.
+Thank you.</div>
+    </div>
+
+    <div class="tip-box">
+      <strong>💡 Dica:</strong> Antes de fazer o pedido, envie sempre a foto do modelo da agulha que você precisa. Diga: <em>"Please see the attached photo. I need this exact model."</em>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PLATINAS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-blue">⚙️</div>
+      <div>
+        <div class="section-title">Platinas para Tear</div>
+        <div class="section-sub">Scripts prontos para pedir platinas</div>
+      </div>
+    </div>
+
+    <div class="script-card">
+      <div class="script-label label-pt">🇧🇷 O que você quer dizer</div>
+      <div class="script-body prose">Eu preciso de platinas para tear circular</div>
+    </div>
+    <div class="script-card">
+      <div class="script-label label-en">
+        🇨🇳 Script em inglês — copie e envie
+        <button class="copy-btn" onclick="copyText(this, 'script-platina-1')">Copiar</button>
+      </div>
+      <div class="script-body" id="script-platina-1">Hello,
+I need sinkers for circular knitting machine.
+Please send me your catalog with models and prices.
+Thank you.</div>
+    </div>
+
+    <div class="script-card">
+      <div class="script-label label-en">
+        🇨🇳 Fazer pedido de platinas — copie e envie
+        <button class="copy-btn" onclick="copyText(this, 'script-platina-2')">Copiar</button>
+      </div>
+      <div class="script-body" id="script-platina-2">Hello,
+I would like to place an order for sinkers:
+
+<span class="highlight">1000</span> for <span class="highlight-green">[MODEL CODE 1]</span>
+<span class="highlight">1000</span> for <span class="highlight-green">[MODEL CODE 2]</span>
+<span class="highlight">1000</span> for <span class="highlight-green">[MODEL CODE 3]</span>
+
+Please confirm availability and total price.
+Thank you.</div>
+    </div>
+
+    <div class="tip-box blue">
+      <strong>💡 Dica:</strong> Platinas em inglês técnico se chamam <em>"sinkers"</em>. Sempre envie a foto do modelo junto com o pedido para evitar erros de modelo.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- CANCELAR PEDIDO -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-red">❌</div>
+      <div>
+        <div class="section-title">Cancelar e Refazer Pedido</div>
+        <div class="section-sub">Nunca peça para modificar — sempre cancele e refaça</div>
+      </div>
+    </div>
+
+    <div class="script-card">
+      <div class="script-label label-en">
+        🇨🇳 Cancelar pedido — copie e envie
+        <button class="copy-btn" onclick="copyText(this, 'script-cancel')">Copiar</button>
+      </div>
+      <div class="script-body" id="script-cancel">Hello,
+I need to cancel my previous order. Please do not process it.
+
+New correct order:
+
+<span class="highlight">1000</span> for <span class="highlight-green">[MODEL CODE 1]</span>
+<span class="highlight">1000</span> for <span class="highlight-green">[MODEL CODE 2]</span>
+
+Please confirm the cancellation and the new order.
+Thank you.</div>
+    </div>
+
+    <div class="tip-box red">
+      <strong>⚠️ Importante:</strong> Nunca use "Please modify my order". Chineses podem ignorar a modificação e enviar o pedido errado. Sempre cancele e faça um novo pedido do zero.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- WESTERN UNION -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-green">💵</div>
+      <div>
+        <div class="section-title">Pagamento — Western Union</div>
+        <div class="section-sub">Como pedir os dados de pagamento corretamente</div>
+      </div>
+    </div>
+
+    <div class="script-card">
+      <div class="script-label label-en">
+        🇨🇳 Pedir dados para Western Union — copie e envie
+        <button class="copy-btn" onclick="copyText(this, 'script-wu')">Copiar</button>
+      </div>
+      <div class="script-body" id="script-wu">Hello,
+I will pay via Western Union.
+Please provide your information:
+
+- What is your <span class="highlight">first name</span>?
+- What is your <span class="highlight">second name</span>?
+- What is your <span class="highlight">country</span>?
+- What is your <span class="highlight">city</span>?
+
+Thank you.</div>
+    </div>
+
+    <div class="tip-box green">
+      <strong>💡 Dica:</strong> Pergunte sempre <em>"first name"</em> e <em>"second name"</em> separadamente. Nunca use "last name" ou "sobrenome" pois pode gerar confusão com nomes chineses.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- OUTROS SCRIPTS ÚTEIS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-gold">📋</div>
+      <div>
+        <div class="section-title">Outros Scripts Úteis</div>
+        <div class="section-sub">Frases para situações do dia a dia</div>
+      </div>
+    </div>
+
+    <div class="script-card">
+      <div class="script-label label-en">
+        🇨🇳 Pedir catálogo e preços
+        <button class="copy-btn" onclick="copyText(this, 'script-catalog')">Copiar</button>
+      </div>
+      <div class="script-body" id="script-catalog">Hello,
+Please send me your full catalog with prices and minimum order quantity (MOQ).
+Thank you.</div>
+    </div>
+
+    <div class="script-card">
+      <div class="script-label label-en">
+        🇨🇳 Pedir desconto
+        <button class="copy-btn" onclick="copyText(this, 'script-discount')">Copiar</button>
+      </div>
+      <div class="script-body" id="script-discount">Hello,
+Can you offer a better price?
+I am a regular buyer and I plan to order frequently.
+Thank you.</div>
+    </div>
+
+    <div class="script-card">
+      <div class="script-label label-en">
+        🇨🇳 Confirmar pedido e prazo de envio
+        <button class="copy-btn" onclick="copyText(this, 'script-confirm')">Copiar</button>
+      </div>
+      <div class="script-body" id="script-confirm">Hello,
+Please confirm my order is ready.
+What is the shipping date?
+Please send me the tracking number when shipped.
+Thank you.</div>
+    </div>
+
+    <div class="script-card">
+      <div class="script-label label-en">
+        🇨🇳 Enviar foto do modelo
+        <button class="copy-btn" onclick="copyText(this, 'script-photo')">Copiar</button>
+      </div>
+      <div class="script-body" id="script-photo">Hello,
+Please see the attached photo.
+I need this exact model.
+Do you have it in stock?
+What is the price for <span class="highlight">1000</span> units?
+Thank you.</div>
+    </div>
+  </div>
+
+  <!-- CLOSING -->
+  <div class="closing">
+    <div class="closing-emoji">🤝</div>
+    <h3>Bons Negócios!</h3>
+    <p>Use esses scripts com confiança.<br>Comunicação clara = menos erro = mais lucro.</p>
+  </div>
+
+</main>
+
+<script>
+function copyText(btn, id) {
+  const el = document.getElementById(id);
+  // Get text without HTML tags
+  const text = el.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copiado ✓';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copiar';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>
